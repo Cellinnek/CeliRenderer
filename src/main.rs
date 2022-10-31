@@ -39,24 +39,21 @@ fn main() {
 
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
 
-    let mut window = match Window::new(
+    let mut window = Window::new(
         "Renderer",
         WIDTH,
         HEIGHT,
         WindowOptions {
-            scale: Scale::X1,
             ..WindowOptions::default()
         },
-    ) {
-        Ok(win) => win,
-        Err(err) => {
-            println!("Unable to create window {}", err);
-            return;
-        }
-    }; //error handling
+    ).unwrap();
+
+    /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600/2)));*/
+
     let mut now = Instant::now();
     let now2 = Instant::now();
     while window.is_open() {
+
         rotate(&mut ver,0.5*3.14/180.0);
         let cast_vet: [(i32,i32); 8] = [
             ver[0].cast(cam_pos,fov),
@@ -78,13 +75,12 @@ fn main() {
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
-        window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
-        /*buffer = vec![0; WIDTH * HEIGHT];*/
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
         clear(&mut buffer, 0);
-        let elapsed_time = 1.0/now.elapsed().as_secs_f64();
+        let elapsed_time = 1.0/now.elapsed().as_secs_f32();
         now = Instant::now();
         if now.duration_since(now2).as_millis()%30==0{
-            window.set_title(&(elapsed_time as i32).to_string());
+            window.set_title(&(elapsed_time as i32 *2).to_string());
         }
 
     }
