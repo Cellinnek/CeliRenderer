@@ -23,8 +23,8 @@ pub fn line(buffer: &mut Vec<u32>, argx1: i32, argy1: i32, argx2: i32, argy2: i3
     let mut err_tolerance;
 
     loop {
-        if x<WIDTH as i32 && y<HEIGHT as i32{
-            buffer[((y as usize) * (WIDTH)) + x as usize] = color;
+        if (x as usize)<WIDTH && (y as usize)<HEIGHT{
+            buffer[(y*(WIDTH as i32) + x) as usize] = color;
         };
 
 
@@ -44,3 +44,32 @@ pub fn line(buffer: &mut Vec<u32>, argx1: i32, argy1: i32, argx2: i32, argy2: i3
         }
     }
 }
+
+pub fn clear(buffer: &mut Vec<u32>,color:u32) {for i in 0..buffer.len(){buffer[i]=color;}}
+
+#[derive(Copy, Clone)]
+pub struct Vertex {
+    pub x:f32,
+    pub y:f32,
+    pub z:f32,
+}
+
+impl Vertex {
+    pub fn cast(&self,(cx,cy,cz):(f32,f32,f32), FOC:f32) -> (i32,i32){
+        ((FOC*(&self.x+cx)/(FOC+(&self.z+cz))) as i32, (FOC*(&self.y+cy)/(FOC+(&self.z+cz))) as i32)
+    }
+}
+
+pub fn rotate(arr: &mut [Vertex], fi: f32) {
+    for i in arr {
+        i.x = i.x*fi.cos()-i.z*fi.sin();
+        i.z = i.x*fi.sin()+i.z*fi.cos();
+
+        i.z = i.z*fi.cos()-i.y*fi.sin();
+        i.y = i.z*fi.sin()+i.y*fi.cos();
+
+        i.y = i.y*fi.cos()-i.x*fi.sin();
+        i.x = i.y*fi.sin()+i.x*fi.cos();
+    }
+}
+
