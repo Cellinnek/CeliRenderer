@@ -1,26 +1,25 @@
 use minifb::{Scale, Window, WindowOptions};
 use std::time::Instant;
 
-const WIDTH: usize = 128;
-const HEIGHT: usize = 128;
+const WIDTH: usize = 512;
+const HEIGHT: usize = 512;
 
 mod functions;
-use functions::{line,Vertex,rotate};
-use crate::functions::clear;
+use functions::{line,Vertex,rotate,clear};
 
 fn main() {
-    let mut cam_pos:(f32,f32,f32) = (0.0,0.0,4048.0);
+    let mut cam_pos:(f32,f32,f32) = (0.0,0.0,1024.0);
     let mut fov:f32 = 512.0;
 
     let mut ver: [Vertex; 8] = [
         Vertex{x:256.0,y:256.0,z:-256.0},//   0
         Vertex{x:-256.0,y:256.0,z:-256.0},//  1
-        Vertex{x:256.0,y:256.0,z:256.0},//   2
-        Vertex{x:-256.0,y:256.0,z:256.0},//  3
+        Vertex{x:256.0,y:256.0,z:256.0},//    2
+        Vertex{x:-256.0,y:256.0,z:256.0},//   3
         Vertex{x:256.0,y:-256.0,z:-256.0},//  4
         Vertex{x:-256.0,y:-256.0,z:-256.0},// 5
-        Vertex{x:256.0,y:-256.0,z:256.0},//  6
-        Vertex{x:-256.0,y:-256.0,z:256.0}//  7
+        Vertex{x:256.0,y:-256.0,z:256.0},//   6
+        Vertex{x:-256.0,y:-256.0,z:256.0}//   7
     ];
 
     let cube_edges: [[u16;2]; 12] = [
@@ -45,7 +44,7 @@ fn main() {
         WIDTH,
         HEIGHT,
         WindowOptions {
-            scale: Scale::X4,
+            scale: Scale::X1,
             ..WindowOptions::default()
         },
     ) {
@@ -56,6 +55,7 @@ fn main() {
         }
     }; //error handling
     let mut now = Instant::now();
+    let now2 = Instant::now();
     while window.is_open() {
         rotate(&mut ver,0.5*3.14/180.0);
         let cast_vet: [(i32,i32); 8] = [
@@ -83,6 +83,9 @@ fn main() {
         clear(&mut buffer, 0);
         let elapsed_time = 1.0/now.elapsed().as_secs_f64();
         now = Instant::now();
-        window.set_title(&(elapsed_time as i32).to_string());
+        if now.duration_since(now2).as_millis()%30==0{
+            window.set_title(&(elapsed_time as i32).to_string());
+        }
+
     }
 }

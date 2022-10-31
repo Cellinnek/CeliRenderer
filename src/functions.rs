@@ -55,8 +55,8 @@ pub struct Vertex {
 }
 
 impl Vertex {
-    pub fn cast(&self,(cx,cy,cz):(f32,f32,f32), FOC:f32) -> (i32,i32){
-        ((FOC*(&self.x+cx)/(FOC+(&self.z+cz))) as i32, (FOC*(&self.y+cy)/(FOC+(&self.z+cz))) as i32)
+    pub fn cast(&self,(cx,cy,cz):(f32,f32,f32), foc:f32) -> (i32,i32){
+        ((foc*(&self.x+cx)/(foc+(&self.z+cz))) as i32, (foc*(&self.y+cy)/(foc+(&self.z+cz))) as i32)
     }
 }
 
