@@ -12,5 +12,4 @@ minifb = "0.23.0"
 opt-level = 0
 codegen-units = 1
 lto = true
-RUSTFLAGS="-C target-cpu=native"
 panic = "abort"

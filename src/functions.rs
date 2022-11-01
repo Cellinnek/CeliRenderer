@@ -99,20 +99,25 @@ pub struct Vertex {
 
 impl Vertex {
     pub fn cast(&self,(cx,cy,cz):(f64,f64,f64), foc:f64) -> (i32,i32){
-        ((foc*(&self.x+cx)/(foc+(&self.z+cz))).round() as i32, (foc*(&self.y+cy)/(foc+(&self.z+cz))).round() as i32)
+        ((foc*(&self.x+cx)/(foc+(&self.z+cz))) as i32, (foc*(&self.y+cy)/(foc+(&self.z+cz))) as i32)
     }
 }
 
-pub fn rotate(arr: &mut [Vertex], fi: f64) {
-    for i in arr {
-        i.x = i.x*fi.cos()-i.z*fi.sin();
-        i.z = i.x*fi.sin()+i.z*fi.cos();
-
-        i.z = i.z*fi.cos()-i.y*fi.sin();
-        i.y = i.z*fi.sin()+i.y*fi.cos();
-
-        i.y = i.y*fi.cos()-i.x*fi.sin();
-        i.x = i.y*fi.sin()+i.x*fi.cos();
+pub fn rotate(arr: &mut [Vertex], fi: f64, axis: u8) {
+    match axis%3{
+        0 => for i in arr {
+            let (y,z) = (i.y,i.z);
+            i.z = z*fi.cos()-y*fi.sin();
+            i.y = z*fi.sin()+y*fi.cos();},
+        1 => for i in arr {
+            let (x,z) = (i.x,i.z);
+            i.x = x*fi.cos()-z*fi.sin();
+            i.z = x*fi.sin()+z*fi.cos();},
+        2 => for i in arr {
+            let (x,y) = (i.x,i.y);
+            i.y = y*fi.cos()-x*fi.sin();
+            i.x = y*fi.sin()+x*fi.cos();},
+        _ => println!("Axis error!")
     }
 }
 
