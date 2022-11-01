@@ -11,6 +11,6 @@ minifb = "0.23.0"
 [profile.release]
 opt-level = 0
 codegen-units = 1
-lto = "fat"
+lto = true
 RUSTFLAGS="-C target-cpu=native"
 panic = "abort"
