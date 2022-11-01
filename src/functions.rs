@@ -48,7 +48,6 @@ pub fn line(buffer: &mut Vec<u32>, argx1: i32, argy1: i32, argx2: i32, argy2: i3
 
 pub fn clear(buffer: &mut Vec<u32>,color:u32) {for i in 0..buffer.len(){buffer[i]=color;}}
 
-
 pub fn triangle(buffer: &mut Vec<u32>,mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,mut x3:i32,mut y3:i32,color:u32){
     let height = HEIGHT as i32;
     let width = WIDTH as i32;
@@ -91,22 +90,20 @@ pub fn triangle(buffer: &mut Vec<u32>,mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i3
         }
 }
 
-
-
 #[derive(Copy, Clone)]
 pub struct Vertex {
-    pub x:f32,
-    pub y:f32,
-    pub z:f32,
+    pub x:f64,
+    pub y:f64,
+    pub z:f64,
 }
 
 impl Vertex {
-    pub fn cast(&self,(cx,cy,cz):(f32,f32,f32), foc:f32) -> (i32,i32){
-        ((foc*(&self.x+cx)/(foc+(&self.z+cz))) as i32, (foc*(&self.y+cy)/(foc+(&self.z+cz))) as i32)
+    pub fn cast(&self,(cx,cy,cz):(f64,f64,f64), foc:f64) -> (i32,i32){
+        ((foc*(&self.x+cx)/(foc+(&self.z+cz))).round() as i32, (foc*(&self.y+cy)/(foc+(&self.z+cz))).round() as i32)
     }
 }
 
-pub fn rotate(arr: &mut [Vertex], fi: f32) {
+pub fn rotate(arr: &mut [Vertex], fi: f64) {
     for i in arr {
         i.x = i.x*fi.cos()-i.z*fi.sin();
         i.z = i.x*fi.sin()+i.z*fi.cos();

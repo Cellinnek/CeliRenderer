@@ -1,6 +1,6 @@
 use minifb::{Scale, Window, WindowOptions};
 use std::time::Instant;
-use minifb::Key::Escape;
+use minifb::Key::{Escape, H};
 use minifb::ScaleMode::AspectRatioStretch;
 
 const WIDTH: usize = 512;
@@ -10,8 +10,8 @@ mod functions;
 use functions::{line,Vertex,rotate,clear,triangle};
 
 fn main() {
-    let mut cam_pos:(f32,f32,f32) = (0.0,0.0,1024.0);
-    let mut fov:f32 = WIDTH as f32;
+    let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-1800.0);
+    let mut fov = WIDTH as f64;
 
     let mut ver: [Vertex; 8] = [
         Vertex{x:256.0,y:256.0,z:-256.0},//   0
@@ -39,13 +39,20 @@ fn main() {
         [3,7]
     ];
 
-    let cube_faces: [[u8;3]; 4] = [
+    let cube_faces: [[u8;3];12] = [
         [0,1,3],
         [0,2,3],
         [4,5,7],
-        [4,6,7]
+        [4,6,7],
+        [2,0,4],
+        [2,6,4],
+        [2,6,7],
+        [2,3,7],
+        [0,1,5],
+        [0,4,5],
+        [3,1,5],
+        [3,7,5]
     ];
-
 
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
 
@@ -56,22 +63,26 @@ fn main() {
         WindowOptions {
             resize: true,
             scale_mode: AspectRatioStretch,
+            borderless: true,
+            transparency:true,
+            none: true,
             ..WindowOptions::default()
         },
     ).unwrap();
 
-    /*window.set_position(30,30);*/
+    window.topmost(true);
+    window.set_position(500, 175);
     /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
     let mut now = Instant::now();
     let now2 = Instant::now();
     while window.is_open() && !window.is_key_down(Escape) {
-        let elapsed_time = now.elapsed().as_secs_f32();
+        let elapsed_time = now.elapsed().as_secs_f64();
         now = Instant::now();
         if now.duration_since(now2).as_millis()%30==0{
             window.set_title(&((1.0/elapsed_time) as i32).to_string());
         }
-        rotate(&mut ver,1.0*elapsed_time);
+
 
         let cast_vet: [(i32,i32); 8] = [
             ver[0].cast(cam_pos,fov),
@@ -100,10 +111,10 @@ fn main() {
             triangle(&mut buffer,x1,y1,x2,y2,x3,y3,0xffffffff);
         }
 
-
+        rotate(&mut ver, elapsed_time*1.0);
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
-        clear(&mut buffer, 0);
+        clear(&mut buffer, 0x00000000);
     }
 }
