@@ -111,7 +111,8 @@ fn main() {
         rotate(&mut ver, elapsed_time,2);
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
-        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
+
         clear(&mut buffer, 0x00000000);
     }
 }
