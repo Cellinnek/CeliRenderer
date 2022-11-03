@@ -46,11 +46,12 @@ pub fn line(buffer: &mut [u32], argx1: i32, argy1: i32, argx2: i32, argy2: i32, 
     }
 }
 
-pub fn clear(buffer: &mut Vec<u32>,color:u32) {for i in  buffer{*i=color;}}
+pub fn clear(buffer:  &mut [u32], color:u32) {for i in  buffer{*i=color;}}
 
-pub fn triangle(buffer: &mut [u32],mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,mut x3:i32,mut y3:i32,color:u32){
+pub fn triangle(buffer: &mut [u32],mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,mut x3:i32,mut y3:i32,mut color:u32){
     let height = HEIGHT as i32;
     let width = WIDTH as i32;
+
     if y2 > y3
     {
         swap(&mut x2,&mut x3);
@@ -63,7 +64,6 @@ pub fn triangle(buffer: &mut [u32],mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,m
     }
     if y2 > y3
     {
-
         swap(&mut x2,&mut x3);
         swap(&mut y2,&mut y3);
     }
@@ -71,7 +71,7 @@ pub fn triangle(buffer: &mut [u32],mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,m
     let dx_upper = (x2 - x1) as f32 / (y2 - y1 + 1) as f32;
     let dx_low = (x3 - x2) as f32 / (y3 - y2 + 1) as f32;
     let mut xf = x1 as f32;
-    let mut xt = x1 as f32 + dx_upper; // if y0 == y1, special case
+    let mut xt = x1 as f32 + dx_upper;
         for y in y1..(if y3<height-1{y3} else{height-1}) {
             if y >= 0 {
                 for x in (if xf>0.0{xf as i32} else{0})..(if xt < (width-1) as f32{xt as i32} else{width-1}){
