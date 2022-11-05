@@ -103,9 +103,9 @@ fn main() {
             0xff00ff00);
         }*/
 
-        rotate(&mut ver, 0.01,0);
-        rotate(&mut ver, 0.01,1);
-        rotate(&mut ver, 0.01,2);
+        rotate(&mut ver, 1.0/fps.tick() as f64,0);
+        rotate(&mut ver, 1.0/fps.tick() as f64,1);
+        rotate(&mut ver, 1.0/fps.tick() as f64,2);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
