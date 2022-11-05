@@ -3,7 +3,7 @@ use crate::HEIGHT;
 use std::mem::swap;
 use minifb::Key::W;
 
-pub fn line(buffer: &mut [u32], argx1: i32, argy1: i32, argx2: i32, argy2: i32, color: u32) {
+pub fn line(buffer: &mut [u32], (argx1,argy1): (i32,i32), (argx2,argy2): (i32,i32), color: u32) {
     let mut x = argx1;
     let mut y = argy1;
 
@@ -46,8 +46,6 @@ pub fn line(buffer: &mut [u32], argx1: i32, argy1: i32, argx2: i32, argy2: i32, 
         }
     }
 }
-
-pub fn clear(buffer:  &mut [u32], color:u32) {for i in  buffer{*i=color;}}
 
 pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i32,i32),(mut x3,mut y3):(i32,i32), color:u32){
     let height = HEIGHT as i32;

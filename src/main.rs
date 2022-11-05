@@ -7,7 +7,7 @@ const WIDTH: usize = 512;
 const HEIGHT: usize = 512;
 
 mod functions;
-use functions::{line,Vertex,rotate,clear,triangle};
+use functions::{line,Vertex,rotate,triangle};
 
 fn main() {
     let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-1800.0);
@@ -39,7 +39,7 @@ fn main() {
         [3,7]
     ];
 
-    let cube_faces= vec![
+    let cube_faces:Vec<(_,_,_,u32)>= vec![
         (0,1,3,0xffafffff),
         (0,2,3,0xffafffff),
         (4,5,7,0xffffafff),
@@ -54,7 +54,7 @@ fn main() {
         (3,7,5,0xffffffaf)
     ];
 
-    let mut buffer= vec![0; WIDTH * HEIGHT];
+    let mut buffer:Vec<u32>= vec![0; WIDTH * HEIGHT];
 
     let mut window = Window::new(
         "Renderer",
@@ -94,19 +94,18 @@ fn main() {
         //Draw faces
         for i in &cube_faces{
             triangle(&mut buffer,
-                     (cast_ver[i.0 as usize]),
-                     (cast_ver[i.1 as usize]),
-                     (cast_ver[i.2 as usize]),
+                     cast_ver[i.0 as usize],
+                     cast_ver[i.1 as usize],
+                     cast_ver[i.2 as usize],
                      i.3);
         }
 
         //Drawing edges
         /*for i in &cube_edges {
-            let x1 = cast_ver[i[0] as usize].0+WIDTH as i32/2;
-            let y1 = cast_ver[i[0] as usize].1+HEIGHT as i32/2;
-            let x2 = cast_ver[i[1] as usize].0+WIDTH as i32/2;
-            let y2 = cast_ver[i[1] as usize].1+HEIGHT as i32/2;
-            line(&mut buffer,x1,y1, x2,y2, 0xff00ff00);
+            line(&mut buffer,
+            cast_ver[i[0] as usize],
+            cast_ver[i[1] as usize],
+            0xff00ff00);
         }*/
 
         rotate(&mut ver, elapsed_time,0);
@@ -117,6 +116,8 @@ fn main() {
 
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
 
-        clear(&mut buffer, 0x00000000);
+
+        buffer.clear();
+        buffer.resize(WIDTH*HEIGHT,0);
     }
 }
