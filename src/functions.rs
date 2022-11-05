@@ -1,6 +1,7 @@
 use crate::WIDTH;
 use crate::HEIGHT;
 use std::mem::swap;
+use minifb::Key::W;
 
 pub fn line(buffer: &mut [u32], argx1: i32, argy1: i32, argx2: i32, argy2: i32, color: u32) {
     let mut x = argx1;
@@ -48,7 +49,7 @@ pub fn line(buffer: &mut [u32], argx1: i32, argy1: i32, argx2: i32, argy2: i32, 
 
 pub fn clear(buffer:  &mut [u32], color:u32) {for i in  buffer{*i=color;}}
 
-pub fn triangle(buffer: &mut [u32],mut x1:i32,mut y1:i32,mut x2:i32,mut y2:i32,mut x3:i32,mut y3:i32,mut color:u32){
+pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i32,i32),(mut x3,mut y3):(i32,i32), color:u32){
     let height = HEIGHT as i32;
     let width = WIDTH as i32;
 
@@ -96,7 +97,7 @@ pub struct Vertex {
 
 impl Vertex {
     pub fn cast(self,(cx,cy,cz):(f64,f64,f64), foc:f64) -> (i32,i32){
-        ((foc*(self.x+cx)/(foc+(self.z+cz))) as i32, (foc*(self.y+cy)/(foc+(self.z+cz))) as i32)
+        ((foc*(self.x+cx)/(foc+(self.z+cz))) as i32 + WIDTH as i32/2, (foc*(self.y+cy)/(foc+(self.z+cz))) as i32 + HEIGHT as i32/2)
     }
 }
 
