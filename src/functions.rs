@@ -66,6 +66,7 @@ pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i3
         swap(&mut x2,&mut x3);
         swap(&mut y2,&mut y3);
     }
+
     let dx_far = (x3 - x1) as f32/ (y3 - y1 + 1) as f32;
     let dx_upper = (x2 - x1) as f32 / (y2 - y1 + 1) as f32;
     let dx_low = (x3 - x2) as f32 / (y3 - y2 + 1) as f32;

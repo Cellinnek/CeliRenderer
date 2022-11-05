@@ -1,13 +1,13 @@
 use minifb::{Scale, Window, WindowOptions};
-use std::time::Instant;
 use minifb::Key::{Escape};
 use minifb::ScaleMode::AspectRatioStretch;
+use fps_counter::FPSCounter;
 
 const WIDTH: usize = 512;
 const HEIGHT: usize = 512;
 
 mod functions;
-use functions::{line,Vertex,rotate,triangle};
+use functions::*;
 
 fn main() {
     let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-1800.0);
@@ -67,10 +67,7 @@ fn main() {
 
     window.set_position(500, 175);
 
-    /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600/4)));*/
-
-    let mut now = Instant::now();
-    let now2 = Instant::now();
+    /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
     let mut cast_ver = vec![
         (0,0),
@@ -82,11 +79,9 @@ fn main() {
         (0,0),
         (0,0)];
 
-    while window.is_open() && !window.is_key_down(Escape) {
-        let elapsed_time = now.elapsed().as_secs_f64();
-        now = Instant::now();
-        if now.duration_since(now2).as_millis()%30==0{window.set_title(&((1.0/elapsed_time) as i32).to_string());}
+    let mut fps = FPSCounter::new();
 
+    while window.is_open() && !window.is_key_down(Escape) {
         for (i, v) in cast_ver.iter_mut().enumerate(){
             *v = ver[i].cast(cam_pos,fov);
         }
@@ -108,16 +103,18 @@ fn main() {
             0xff00ff00);
         }*/
 
-        rotate(&mut ver, elapsed_time,0);
-        rotate(&mut ver, elapsed_time,1);
-        rotate(&mut ver, elapsed_time,2);
+        rotate(&mut ver, 0.01,0);
+        rotate(&mut ver, 0.01,1);
+        rotate(&mut ver, 0.01,2);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
-        window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
+        /*buffer.sort();*/
 
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
 
         buffer.clear();
         buffer.resize(WIDTH*HEIGHT,0);
+        println!("{}",fps.tick());
     }
 }
