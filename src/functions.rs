@@ -2,7 +2,7 @@ use crate::WIDTH;
 use crate::HEIGHT;
 use std::mem::swap;
 
-pub fn line(buffer: &mut [u32], (argx1,argy1): (i32,i32), (argx2,argy2): (i32,i32), color: u32) {
+pub fn line(buffer: &mut [u32], [argx1,argy1]: [i32; 2], [argx2,argy2]: [i32; 2], color: u32) {
     let mut x = argx1;
     let mut y = argy1;
 

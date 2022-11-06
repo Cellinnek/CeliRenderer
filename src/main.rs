@@ -93,8 +93,8 @@ fn main() {
             cast_ver[i[0] as usize],
             cast_ver[i[1] as usize],
             0xff00ff00);
-        }
-*/
+        }*/
+
         rotate(&mut ver, 1.0/fps.tick() as f64,0);
         rotate(&mut ver, 1.0/fps.tick() as f64,1);
         rotate(&mut ver, 1.0/fps.tick() as f64,2);
