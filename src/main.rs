@@ -105,7 +105,6 @@ fn main() {
 
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
 
-
         buffer.clear();
         buffer.resize(WIDTH*HEIGHT,0);
         println!("{}",fps.tick());
