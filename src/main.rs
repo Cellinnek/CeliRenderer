@@ -69,14 +69,13 @@ fn main() {
 
     /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
-    let mut cast_ver = vec![];
+    let mut cast_ver = vec![(0,0);ver.len()];
 
     let mut fps = FPSCounter::new();
 
     while window.is_open() && !window.is_key_down(Escape) {
-        cast_ver.clear();
-        for  &i in &ver {
-            cast_ver.push(cast(i,cam_pos,fov));
+        for (i,v) in ver.iter().enumerate() {
+            cast_ver[i] = cast(v,cam_pos,fov)
         }
 
         //Draw faces
