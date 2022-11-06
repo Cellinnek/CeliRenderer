@@ -69,7 +69,7 @@ fn main() {
 
     /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
-    let mut cast_ver = vec![(0,0);ver.len()];
+    let mut cast_ver = vec![[0,0];ver.len()];
 
     let mut fps = FPSCounter::new();
 

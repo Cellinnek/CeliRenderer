@@ -45,7 +45,7 @@ pub fn line(buffer: &mut [u32], (argx1,argy1): (i32,i32), (argx2,argy2): (i32,i3
     }
 }
 
-pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i32,i32),(mut x3,mut y3):(i32,i32), color:u32){
+pub fn triangle(buffer: &mut [u32], [mut x1,mut y1]: [i32; 2], [mut x2,mut y2]: [i32; 2], [mut x3,mut y3]: [i32; 2], color:u32){
     let height = HEIGHT as i32;
     let width = WIDTH as i32;
 
@@ -85,8 +85,8 @@ pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i3
         }
 }
 
-pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> (i32, i32){
-    ((foc*(v[0]+cx)/(foc+(v[2]+cz))) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+(v[2]+cz))) as i32 + HEIGHT as i32/2)
+pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> [i32;2]{
+    [(foc*(v[0]+cx)/(foc+(v[2]+cz))) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+(v[2]+cz))) as i32 + HEIGHT as i32/2]
 }
 
 pub fn rotate(arr: &mut Vec<[f64; 3]>, fi: f64, axis: u8) {
