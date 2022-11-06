@@ -34,7 +34,7 @@ pub fn line(buffer: &mut [u32], (argx1,argy1): (i32,i32), (argx2,argy2): (i32,i3
             break;
         };
 
-        err_tolerance = 2 * err;
+        err_tolerance = 1 * err;
 
         if err_tolerance > -dx {
             err -= dy;
@@ -87,33 +87,24 @@ pub fn triangle(buffer: &mut [u32],(mut x1,mut y1):(i32,i32),(mut x2,mut y2):(i3
         }
 }
 
-#[derive(Copy, Clone)]
-pub struct Vertex {
-    pub x:f64,
-    pub y:f64,
-    pub z:f64,
+pub fn cast(v: &mut Vec<f64>, (cx,cy,cz): (f64, f64, f64), foc:f64) -> (i32, i32){
+    ((foc*(v[0]+cx)/(foc+(v[2]+cz))) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+(v[2]+cz))) as i32 + HEIGHT as i32/2)
 }
 
-impl Vertex {
-    pub fn cast(self,(cx,cy,cz):(f64,f64,f64), foc:f64) -> (i32,i32){
-        ((foc*(self.x+cx)/(foc+(self.z+cz))) as i32 + WIDTH as i32/2, (foc*(self.y+cy)/(foc+(self.z+cz))) as i32 + HEIGHT as i32/2)
-    }
-}
-
-pub fn rotate(arr: &mut [Vertex], fi: f64, axis: u8) {
+pub fn rotate(arr: &mut Vec<Vec<f64>>, fi: f64, axis: u8) {
     match axis%3{
         0 => for i in arr {
-            let (y,z) = (i.y,i.z);
-            i.z = z*fi.cos()-y*fi.sin();
-            i.y = z*fi.sin()+y*fi.cos();},
+            let (y,z) = (i[1],i[2]);
+            i[2] = z*fi.cos()-y*fi.sin();
+            i[1] = z*fi.sin()+y*fi.cos();},
         1 => for i in arr {
-            let (x,z) = (i.x,i.z);
-            i.x = x*fi.cos()-z*fi.sin();
-            i.z = x*fi.sin()+z*fi.cos();},
+            let (x,z) = (i[0],i[2]);
+            i[0] = x*fi.cos()-z*fi.sin();
+            i[2] = x*fi.sin()+z*fi.cos();},
         2 => for i in arr {
-            let (x,y) = (i.x,i.y);
-            i.y = y*fi.cos()-x*fi.sin();
-            i.x = y*fi.sin()+x*fi.cos();},
+            let (x,y) = (i[0],i[1]);
+            i[1] = y*fi.cos()-x*fi.sin();
+            i[0] = y*fi.sin()+x*fi.cos();},
         _ => println!("Axis error!")
     }
 }

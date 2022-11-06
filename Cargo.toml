@@ -14,5 +14,4 @@ overflow-checks = false
 strip = "symbols"
 lto = true
 opt-level = 0
-codegen-units = 1
 panic = "abort"

@@ -14,14 +14,14 @@ fn main() {
     let mut fov = WIDTH as f64;
 
     let mut ver= vec![
-        Vertex{x:256.0,y:256.0,z:-256.0},//   0
-        Vertex{x:-256.0,y:256.0,z:-256.0},//  1
-        Vertex{x:256.0,y:256.0,z:256.0},//    2
-        Vertex{x:-256.0,y:256.0,z:256.0},//   3
-        Vertex{x:256.0,y:-256.0,z:-256.0},//  4
-        Vertex{x:-256.0,y:-256.0,z:-256.0},// 5
-        Vertex{x:256.0,y:-256.0,z:256.0},//   6
-        Vertex{x:-256.0,y:-256.0,z:256.0}//   7
+        vec![256.0,256.0,-256.0],//   0
+        vec![-256.0,256.0,-256.0],//  1
+        vec![256.0,256.0,256.0],//    2
+        vec![-256.0,256.0,256.0],//   3
+        vec![256.0,-256.0,-256.0],//  4
+        vec![-256.0,-256.0,-256.0],// 5
+        vec![256.0,-256.0,256.0],//   6
+        vec![-256.0,-256.0,256.0]//   7
     ];
 
     let cube_edges = vec![
@@ -83,7 +83,7 @@ fn main() {
 
     while window.is_open() && !window.is_key_down(Escape) {
         for (i, v) in cast_ver.iter_mut().enumerate(){
-            *v = ver[i].cast(cam_pos,fov);
+            *v = cast(&mut ver[i],cam_pos,fov);
         }
 
         //Draw faces
