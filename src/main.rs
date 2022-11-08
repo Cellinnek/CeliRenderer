@@ -3,17 +3,17 @@ use minifb::Key::{Escape};
 use minifb::ScaleMode::AspectRatioStretch;
 use fps_counter::FPSCounter;
 
-const WIDTH: usize = 512;
+const WIDTH: usize = 1024;
 const HEIGHT: usize = 512;
 
 mod functions;
 use functions::*;
 
 fn main() {
-    let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-1800.0);
-    let mut fov = WIDTH as f64;
-
-    let mut ver= vec![
+    let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-4000.0);
+    let mut fov = 1024.0;
+    //cube
+    let mut cube_ver= vec![
         [256.0,256.0,-256.0],//   0
         [-256.0,256.0,-256.0],//  1
         [256.0,256.0,256.0],//    2
@@ -53,6 +53,37 @@ fn main() {
         (3,1,5,0xffffffaf),
         (3,7,5,0xffffffaf)
     ];
+    //cube
+
+    //piramida
+    let mut pir_ver = vec![
+        [1024.0,-256.0,-256.0],//0
+        [512.0,-256.0,-256.0],// 1
+        [1024.0,-256.0,256.0],// 2
+        [512.0,-256.0,256.0],//  3
+        [768.0,256.0,0.0]//      4
+    ];
+
+    let pir_edges = vec![
+        [0,1],
+        [1,3],
+        [3,2],
+        [2,0],
+        [0,4],
+        [1,4],
+        [2,4],
+        [3,4]
+    ];
+
+    let pir_faces:Vec<(_,_,_,u32)> = vec![
+        (0,1,3,0xffafffff),
+        (3,2,0,0xffafffff),
+        (0,4,1,0xffffafff),
+        (1,4,3,0xffffffaf),
+        (3,4,2,0xffffafaf),
+        (2,4,0,0xffafafff)
+    ];
+    //piramida
 
     let mut buffer:Vec<u32>= vec![0; WIDTH * HEIGHT];
 
@@ -69,35 +100,54 @@ fn main() {
 
     /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
-    let mut cast_ver = vec![[0,0];ver.len()];
+    let mut cast_cube_ver = vec![[0,0];cube_ver.len()];
+    let mut cast_pir_ver = vec![[0,0];cube_ver.len()];
 
     let mut fps = FPSCounter::new();
 
     while window.is_open() && !window.is_key_down(Escape) {
-        for (i,v) in ver.iter().enumerate() {
-            cast_ver[i] = cast(v,cam_pos,fov)
+        for (i,v) in cube_ver.iter().enumerate() {
+            cast_cube_ver[i] = cast(v,cam_pos,fov)
+        }
+        for (i,v) in pir_ver.iter().enumerate() {
+            cast_pir_ver[i] = cast(v,cam_pos,fov)
         }
 
         //Draw faces
         for i in &cube_faces{
             triangle(&mut buffer,
-                     cast_ver[i.0 as usize],
-                     cast_ver[i.1 as usize],
-                     cast_ver[i.2 as usize],
+                     cast_cube_ver[i.0 as usize],
+                     cast_cube_ver[i.1 as usize],
+                     cast_cube_ver[i.2 as usize],
                      i.3);
         }
 
-        //Drawing edges
-        /*for i in &cube_edges {
+        for i in &cube_edges {
             line(&mut buffer,
-            cast_ver[i[0] as usize],
-            cast_ver[i[1] as usize],
-            0xff00ff00);
-        }*/
+                 cast_cube_ver[i[0] as usize],
+                 cast_cube_ver[i[1] as usize],
+                 0xff00ff00);
+        }
 
-        rotate(&mut ver, 1.0/fps.tick() as f64,0);
-        rotate(&mut ver, 1.0/fps.tick() as f64,1);
-        rotate(&mut ver, 1.0/fps.tick() as f64,2);
+        for i in &pir_faces{
+            triangle(&mut buffer,
+                     cast_pir_ver[i.0 as usize],
+                     cast_pir_ver[i.1 as usize],
+                     cast_pir_ver[i.2 as usize],
+                     i.3);
+        }
+
+        for i in &pir_edges {
+            line(&mut buffer,
+            cast_pir_ver[i[0] as usize],
+            cast_pir_ver[i[1] as usize],
+            0xff00ff00);
+        }
+
+
+        rotate(&mut pir_ver, 1.0/fps.tick() as f64,0);
+        rotate(&mut cube_ver, 1.0/fps.tick() as f64,0);
+
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 

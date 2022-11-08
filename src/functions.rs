@@ -86,7 +86,7 @@ pub fn triangle(buffer: &mut [u32], [mut x1,mut y1]: [i32; 2], [mut x2,mut y2]: 
 }
 
 pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> [i32;2]{
-    [(foc*(v[0]+cx)/(foc+(v[2]+cz))) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+(v[2]+cz))) as i32 + HEIGHT as i32/2]
+    [(foc*(v[0]+cx)/(foc+v[2]+cz)) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+v[2]+cz)) as i32 + HEIGHT as i32/2]
 }
 
 pub fn rotate(arr: &mut Vec<[f64; 3]>, fi: f64, axis: u8) {
