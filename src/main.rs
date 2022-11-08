@@ -1,7 +1,6 @@
 use minifb::{Scale, Window, WindowOptions};
 use minifb::Key::{Escape};
 use minifb::ScaleMode::AspectRatioStretch;
-use fps_counter::FPSCounter;
 
 const WIDTH: usize = 1024;
 const HEIGHT: usize = 512;
@@ -103,8 +102,6 @@ fn main() {
     let mut cast_cube_ver = vec![[0,0];cube_ver.len()];
     let mut cast_pir_ver = vec![[0,0];cube_ver.len()];
 
-    let mut fps = FPSCounter::new();
-
     while window.is_open() && !window.is_key_down(Escape) {
         for (i,v) in cube_ver.iter().enumerate() {
             cast_cube_ver[i] = cast(v,cam_pos,fov)
@@ -114,13 +111,13 @@ fn main() {
         }
 
         //Draw faces
-        for i in &cube_faces{
+        /*for i in &cube_faces{
             triangle(&mut buffer,
                      cast_cube_ver[i.0 as usize],
                      cast_cube_ver[i.1 as usize],
                      cast_cube_ver[i.2 as usize],
                      i.3);
-        }
+        }*/
 
         for i in &cube_edges {
             line(&mut buffer,
@@ -129,13 +126,13 @@ fn main() {
                  0xff00ff00);
         }
 
-        for i in &pir_faces{
+        /*for i in &pir_faces{
             triangle(&mut buffer,
                      cast_pir_ver[i.0 as usize],
                      cast_pir_ver[i.1 as usize],
                      cast_pir_ver[i.2 as usize],
                      i.3);
-        }
+        }*/
 
         for i in &pir_edges {
             line(&mut buffer,
@@ -145,9 +142,10 @@ fn main() {
         }
 
 
-        rotate(&mut pir_ver, 1.0/fps.tick() as f64,0);
-        rotate(&mut cube_ver, 1.0/fps.tick() as f64,0);
-
+        rotate(&mut pir_ver, 0.004,1);
+        rotate(&mut cube_ver, 0.004,0);
+        rotate(&mut cube_ver, 0.004,1);
+        rotate(&mut cube_ver, 0.004,2);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
@@ -157,6 +155,5 @@ fn main() {
 
         buffer.clear();
         buffer.resize(WIDTH*HEIGHT,0);
-        println!("{}",fps.tick());
     }
 }
