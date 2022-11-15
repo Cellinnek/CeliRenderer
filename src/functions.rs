@@ -89,20 +89,20 @@ pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> [i32;2]{
     [(foc*(v[0]+cx)/(foc+v[2]+cz)) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+v[2]+cz)) as i32 + HEIGHT as i32/2]
 }
 
-pub fn rotate(arr: &mut Vec<[f64; 3]>, fi: f64, axis: u8) {
+pub fn rotate(arr: &mut Vec<[f64; 3]>,(ox,oy,oz):(f64,f64,f64), fi: f64, axis: u8) {
     match axis%3{
         0 => for i in arr {
-            let (y,z) = (i[1],i[2]);
-            i[2] = z*fi.cos()-y*fi.sin();
-            i[1] = z*fi.sin()+y*fi.cos();},
+            let (y,z) = (i[1]-oy,i[2]-oz);
+            i[2] = z*fi.cos()-y*fi.sin()+oz;
+            i[1] = z*fi.sin()+y*fi.cos()+oy;},
         1 => for i in arr {
-            let (x,z) = (i[0],i[2]);
-            i[0] = x*fi.cos()-z*fi.sin();
-            i[2] = x*fi.sin()+z*fi.cos();},
+            let (x,z) = (i[0]-ox,i[2]-oz);
+            i[0] = x*fi.cos()-z*fi.sin()+ox;
+            i[2] = x*fi.sin()+z*fi.cos()+oz;},
         2 => for i in arr {
-            let (x,y) = (i[0],i[1]);
-            i[1] = y*fi.cos()-x*fi.sin();
-            i[0] = y*fi.sin()+x*fi.cos();},
+            let (x,y) = (i[0]-ox,i[1]-oy);
+            i[1] = y*fi.cos()-x*fi.sin()+oy;
+            i[0] = y*fi.sin()+x*fi.cos()+ox;},
         _ => println!("Axis error!")
     }
 }

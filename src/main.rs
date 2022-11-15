@@ -141,11 +141,10 @@ fn main() {
             0xff00ff00);
         }
 
-
-        rotate(&mut pir_ver, 0.004,1);
-        rotate(&mut cube_ver, 0.004,0);
-        rotate(&mut cube_ver, 0.004,1);
-        rotate(&mut cube_ver, 0.004,2);
+        rotate(&mut pir_ver,(768.0,0.0,0.0), 0.004,1);
+        rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,0);
+        rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,1);
+        rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,2);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
