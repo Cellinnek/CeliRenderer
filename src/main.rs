@@ -23,7 +23,7 @@ fn main() {
         [-256.0,-256.0,256.0]//   7
     ];
 
-    let cube_edges = vec![
+    let cube_edges:Vec<[usize;2]> = vec![
         [0,1],
         [1,3],
         [3,2],
@@ -38,7 +38,7 @@ fn main() {
         [3,7]
     ];
 
-    let cube_faces:Vec<(_,_,_,u32)>= vec![
+    let cube_faces:Vec<(usize,usize,usize,u32)>= vec![
         (0,1,3,0xffafffff),
         (0,2,3,0xffafffff),
         (4,5,7,0xffffafff),
@@ -63,7 +63,7 @@ fn main() {
         [768.0,256.0,0.0]//      4
     ];
 
-    let pir_edges = vec![
+    let pir_edges:Vec<[usize;2]> = vec![
         [0,1],
         [1,3],
         [3,2],
@@ -74,7 +74,7 @@ fn main() {
         [3,4]
     ];
 
-    let pir_faces:Vec<(_,_,_,u32)> = vec![
+    let pir_faces:Vec<(usize,usize,usize,u32)> = vec![
         (0,1,3,0xffafffff),
         (3,2,0,0xffafffff),
         (0,4,1,0xffffafff),
@@ -111,35 +111,10 @@ fn main() {
         }
 
         //Draw faces
-        /*for i in &cube_faces{
-            triangle(&mut buffer,
-                     cast_cube_ver[i.0 as usize],
-                     cast_cube_ver[i.1 as usize],
-                     cast_cube_ver[i.2 as usize],
-                     i.3);
-        }*/
-
-        for i in &cube_edges {
-            line(&mut buffer,
-                 cast_cube_ver[i[0] as usize],
-                 cast_cube_ver[i[1] as usize],
-                 0xff00ff00);
-        }
-
-        /*for i in &pir_faces{
-            triangle(&mut buffer,
-                     cast_pir_ver[i.0 as usize],
-                     cast_pir_ver[i.1 as usize],
-                     cast_pir_ver[i.2 as usize],
-                     i.3);
-        }*/
-
-        for i in &pir_edges {
-            line(&mut buffer,
-            cast_pir_ver[i[0] as usize],
-            cast_pir_ver[i[1] as usize],
-            0xff00ff00);
-        }
+        draw_faces(&mut buffer, &cube_faces, &cast_cube_ver);
+        draw_faces(&mut buffer, &pir_faces, &cast_pir_ver);
+        draw_edges(&mut buffer, &cube_edges, &cast_cube_ver);
+        draw_edges(&mut buffer, &pir_edges, &cast_pir_ver);
 
         rotate(&mut pir_ver,(768.0,0.0,0.0), 0.004,1);
         rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,0);

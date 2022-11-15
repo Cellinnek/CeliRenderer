@@ -106,3 +106,26 @@ pub fn rotate(arr: &mut Vec<[f64; 3]>,(ox,oy,oz):(f64,f64,f64), fi: f64, axis: u
         _ => println!("Axis error!")
     }
 }
+
+pub fn draw_faces(buffer: &mut [u32], faces: &Vec<(usize, usize, usize, u32)>, cast_ver: &Vec<[i32; 2]>){
+    for i in faces{
+        triangle(buffer,
+                 cast_ver[i.0],
+                 cast_ver[i.1],
+                 cast_ver[i.2],
+                 i.3);
+    }
+}
+
+pub fn draw_edges(buffer: &mut [u32], edges: &Vec<[usize;2]>, cast_ver: &Vec<[i32; 2]>){
+    for i in edges{
+        line(buffer,
+             cast_ver[i[0]],
+             cast_ver[i[1]],
+             0xff00ff00);
+    }
+}
+
+pub fn multi(){
+
+}
