@@ -64,6 +64,7 @@ fn main() {
     ];
 
     let mut pir_middle = [[768.0,0.0,0.0]];
+
     let pir_edges:Vec<[usize;2]> = vec![
         [0,1],
         [1,3],
