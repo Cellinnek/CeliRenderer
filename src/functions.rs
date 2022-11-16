@@ -85,11 +85,17 @@ pub fn triangle(buffer: &mut [u32], [mut x1,mut y1]: [i32; 2], [mut x2,mut y2]: 
         }
 }
 
-pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> [i32;2]{
+/*pub fn cast(v: &[f64; 3], (cx,cy,cz): (f64, f64, f64), foc:f64) -> [i32;2]{
     [(foc*(v[0]+cx)/(foc+v[2]+cz)) as i32 + WIDTH as i32/2, (foc*(v[1]+cy)/(foc+v[2]+cz)) as i32 + HEIGHT as i32/2]
+}*/
+
+pub fn cast_ver(cast_ver: &mut [[i32;2]], ver: &[[f64;3]],(cx,cy,cz):(f64,f64,f64),fov: f64){
+    for (i,v) in ver.iter().enumerate() {
+        cast_ver[i] = [(fov*(v[0]+cx)/(fov+v[2]+cz)) as i32 + WIDTH as i32/2, (fov*(v[1]+cy)/(fov+v[2]+cz)) as i32 + HEIGHT as i32/2]
+    }
 }
 
-pub fn rotate(arr: &mut Vec<[f64; 3]>,(ox,oy,oz):(f64,f64,f64), fi: f64, axis: u8) {
+pub fn rotate(arr: &mut [[f64;3]], (ox,oy,oz):(f64, f64, f64), fi: f64, axis: u8) {
     match axis%3{
         0 => for i in arr {
             let (y,z) = (i[1]-oy,i[2]-oz);
@@ -107,7 +113,7 @@ pub fn rotate(arr: &mut Vec<[f64; 3]>,(ox,oy,oz):(f64,f64,f64), fi: f64, axis: u
     }
 }
 
-pub fn draw_faces(buffer: &mut [u32], faces: &Vec<(usize, usize, usize, u32)>, cast_ver: &Vec<[i32; 2]>){
+pub fn draw_faces(buffer: &mut [u32], faces: &Vec<(usize, usize, usize, u32)>, cast_ver: &[[i32; 2]]){
     for i in faces{
         triangle(buffer,
                  cast_ver[i.0],
@@ -117,15 +123,11 @@ pub fn draw_faces(buffer: &mut [u32], faces: &Vec<(usize, usize, usize, u32)>, c
     }
 }
 
-pub fn draw_edges(buffer: &mut [u32], edges: &Vec<[usize;2]>, cast_ver: &Vec<[i32; 2]>){
+pub fn draw_edges(buffer: &mut [u32], edges: &Vec<[usize;2]>, cast_ver: &[[i32; 2]]){
     for i in edges{
         line(buffer,
              cast_ver[i[0]],
              cast_ver[i[1]],
              0xff00ff00);
     }
-}
-
-pub fn multi(){
-
 }

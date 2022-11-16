@@ -12,7 +12,7 @@ fn main() {
     let mut cam_pos:(f64,f64,f64) = (0.0,0.0,-4000.0);
     let mut fov = 1024.0;
     //cube
-    let mut cube_ver= vec![
+    let mut cube_ver= [
         [256.0,256.0,-256.0],//   0
         [-256.0,256.0,-256.0],//  1
         [256.0,256.0,256.0],//    2
@@ -55,7 +55,7 @@ fn main() {
     //cube
 
     //piramida
-    let mut pir_ver = vec![
+    let mut pir_ver = [
         [1024.0,-256.0,-256.0],//0
         [512.0,-256.0,-256.0],// 1
         [1024.0,-256.0,256.0],// 2
@@ -63,6 +63,7 @@ fn main() {
         [768.0,256.0,0.0]//      4
     ];
 
+    let mut pir_middle = [[768.0,0.0,0.0]];
     let pir_edges:Vec<[usize;2]> = vec![
         [0,1],
         [1,3],
@@ -99,24 +100,22 @@ fn main() {
 
     /*window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));*/
 
-    let mut cast_cube_ver = vec![[0,0];cube_ver.len()];
-    let mut cast_pir_ver = vec![[0,0];cube_ver.len()];
+    let mut cast_cube_ver = vec![[0;2];cube_ver.len()];
+    let mut cast_pir_ver = vec![[0;2];cube_ver.len()];
 
     while window.is_open() && !window.is_key_down(Escape) {
-        for (i,v) in cube_ver.iter().enumerate() {
-            cast_cube_ver[i] = cast(v,cam_pos,fov)
-        }
-        for (i,v) in pir_ver.iter().enumerate() {
-            cast_pir_ver[i] = cast(v,cam_pos,fov)
-        }
+        cast_ver(&mut cast_cube_ver, &cube_ver, cam_pos,fov);
+        cast_ver(&mut cast_pir_ver, &pir_ver, cam_pos,fov);
 
         //Draw faces
-        draw_faces(&mut buffer, &cube_faces, &cast_cube_ver);
-        draw_faces(&mut buffer, &pir_faces, &cast_pir_ver);
+        /*draw_faces(&mut buffer, &cube_faces, &cast_cube_ver);
+        draw_faces(&mut buffer, &pir_faces, &cast_pir_ver);*/
         draw_edges(&mut buffer, &cube_edges, &cast_cube_ver);
         draw_edges(&mut buffer, &pir_edges, &cast_pir_ver);
 
-        rotate(&mut pir_ver,(768.0,0.0,0.0), 0.004,1);
+        rotate(&mut pir_middle, (0.0, 0.0, 0.0), 0.004, 1);
+        rotate(&mut pir_ver, (0.0, 0.0, 0.0), 0.004, 1);
+        rotate(&mut pir_ver, (pir_middle[0][0], pir_middle[0][1], pir_middle[0][2]), 0.004, 1);
         rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,0);
         rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,1);
         rotate(&mut cube_ver,(0.0,0.0,0.0), 0.004,2);
