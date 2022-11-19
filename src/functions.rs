@@ -133,8 +133,8 @@ pub fn draw_edges(buffer: &mut [u32], edges: &Vec<[usize;2]>, cast_ver: &[[i32; 
 }
 
 pub struct shape{
-    pub ver:[[f64;3]],
-    pub origin: [f64;3],
+    pub ver:Vec<[f64;3]>,
+    pub origin: [[f64;3];1],
     pub edges: Vec<[usize;2]>,
     pub faces: Vec<(usize,usize,usize,u32)>
 }
