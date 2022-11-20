@@ -102,20 +102,14 @@ fn main() {
 
     let mut cast_cube_ver = vec![[0;2];cube.ver.len()];
     let mut cast_pir_ver = vec![[0;2];pir.ver.len()];
-    let mut cast_origin = [[0;2];2];
+    /*let mut cast_origin = [[0;2];2];*/
 
     while window.is_open() && !window.is_key_down(Escape) {
         cast_ver(&mut cast_cube_ver, &cube.ver, cam_pos,fov);
         cast_ver(&mut cast_pir_ver, &pir.ver, cam_pos,fov);
 
-        cast_ver(&mut cast_origin, &pir.origin, cam_pos,fov);
-        cast_ver(&mut cast_origin[1..2], &cube.origin, cam_pos,fov);
-
-        //Draw faces
-        /*draw_faces(&mut buffer, &cube_faces, &cast_cube_ver);
-        draw_faces(&mut buffer, &pir_faces, &cast_pir_ver);*/
-        draw_edges(&mut buffer, &cube.edges, &cast_cube_ver);
-        draw_edges(&mut buffer, &pir.edges, &cast_pir_ver);
+        /*cast_ver(&mut cast_origin, &pir.origin, cam_pos,fov);
+        cast_ver(&mut cast_origin[1..2], &cube.origin, cam_pos,fov);*/
 
         rotate(&mut pir.origin, &cube.origin, 0.004, 1);
         rotate(&mut pir.ver, &cube.origin, 0.004, 1);
@@ -125,11 +119,16 @@ fn main() {
         rotate(&mut cube.ver, &cube.origin, 0.004, 2);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
-        buffer[((cast_origin[0][1] /*y*/ as usize) * (WIDTH)) + cast_origin[0][0] /*x*/ as usize] = 0x00ffffff;
-        buffer[((cast_origin[1][1] /*y*/ as usize) * (WIDTH)) + cast_origin[1][0] /*x*/ as usize] = 0x00ffffff;
+
+        draw_faces(&mut buffer, &cube.faces, &cast_cube_ver);
+        draw_faces(&mut buffer, &pir.faces, &cast_pir_ver);
+        /*draw_edges(&mut buffer, &cube.edges, &cast_cube_ver);
+        draw_edges(&mut buffer, &pir.edges, &cast_pir_ver);*/
+
+        /*buffer[((cast_origin[0][1] /*y*/ as usize) * (WIDTH)) + cast_origin[0][0] /*x*/ as usize] = 0x00ffffff;
+        buffer[((cast_origin[1][1] /*y*/ as usize) * (WIDTH)) + cast_origin[1][0] /*x*/ as usize] = 0x00ffffff;*/
 
         /*buffer.sort();*/
-
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");
 
         buffer.clear();
