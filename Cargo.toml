@@ -5,7 +5,6 @@ edition = "2021"
 
 [dependencies]
 minifb = "0.23.0"
-fps_counter = "2.0.0"
 
 [profile.release]
 debug-assertions = false

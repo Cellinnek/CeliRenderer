@@ -120,10 +120,10 @@ fn main() {
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
-        draw_faces(&mut buffer, &cube.faces, &cast_cube_ver);
-        draw_faces(&mut buffer, &pir.faces, &cast_pir_ver);
-        /*draw_edges(&mut buffer, &cube.edges, &cast_cube_ver);
-        draw_edges(&mut buffer, &pir.edges, &cast_pir_ver);*/
+        /*draw_faces(&mut buffer, &cube.faces, &cast_cube_ver);
+        draw_faces(&mut buffer, &pir.faces, &cast_pir_ver);*/
+        draw_edges(&mut buffer, &cube.edges, &cast_cube_ver);
+        draw_edges(&mut buffer, &pir.edges, &cast_pir_ver);
 
         /*buffer[((cast_origin[0][1] /*y*/ as usize) * (WIDTH)) + cast_origin[0][0] /*x*/ as usize] = 0x00ffffff;
         buffer[((cast_origin[1][1] /*y*/ as usize) * (WIDTH)) + cast_origin[1][0] /*x*/ as usize] = 0x00ffffff;*/
