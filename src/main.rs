@@ -1,3 +1,8 @@
+use std::alloc::System;
+
+#[global_allocator]
+static A: System = System;
+
 extern crate core;
 
 use minifb::{Scale, Window, WindowOptions};
@@ -102,7 +107,6 @@ fn main() {
 
     let mut cast_cube_ver = vec![[0;2];cube.ver.len()];
     let mut cast_pir_ver = vec![[0;2];pir.ver.len()];
-    /*let mut cast_origin = [[0;2];2];*/
 
     while window.is_open() && !window.is_key_down(Escape) {
         cast_ver(&mut cast_cube_ver, &cube.ver, cam_pos,fov);
