@@ -30,7 +30,7 @@ fn main() {
             [256.0,-256.0,256.0],//   6
             [-256.0,-256.0,256.0]//   7
         ],
-        origin: [[0.0,0.0,0.0]],
+        origin: [0.0,0.0,0.0],
         edges: vec![
             [0,1],
             [1,3],
@@ -69,7 +69,7 @@ fn main() {
             [512.0,-256.0,256.0],//  3
             [768.0,256.0,0.0]//      4
         ],
-        origin: [[768.0,0.0,0.0]],
+        origin: [768.0,0.0,0.0],
         edges: vec![
             [0,1],
             [1,3],
@@ -112,15 +112,9 @@ fn main() {
         cast_ver(&mut cast_cube_ver, &cube.ver, cam_pos,fov);
         cast_ver(&mut cast_pir_ver, &pir.ver, cam_pos,fov);
 
-        /*cast_ver(&mut cast_origin, &pir.origin, cam_pos,fov);
-        cast_ver(&mut cast_origin[1..2], &cube.origin, cam_pos,fov);*/
+        /*let cast_origin = cast(&cube.origin, cam_pos,fov);*/
 
-        rotate(&mut pir.origin, &cube.origin, 0.004, 1);
-        rotate(&mut pir.ver, &cube.origin, 0.004, 1);
-        rotate(&mut pir.ver, &pir.origin, 0.004, 1);
-        rotate(&mut cube.ver, &cube.origin, 0.004, 0);
-        rotate(&mut cube.ver, &cube.origin, 0.004, 1);
-        rotate(&mut cube.ver, &cube.origin, 0.004, 2);
+        cube.rotate(&pir.origin, 0.004, 1);
 
         /*buffer[((200 /*y*/ as usize) * (WIDTH)) + 200 /*x*/ as usize] = 0x00ffffff;*/
 
@@ -129,8 +123,7 @@ fn main() {
         draw_edges(&mut buffer, &cube.edges, &cast_cube_ver);
         draw_edges(&mut buffer, &pir.edges, &cast_pir_ver);
 
-        /*buffer[((cast_origin[0][1] /*y*/ as usize) * (WIDTH)) + cast_origin[0][0] /*x*/ as usize] = 0x00ffffff;
-        buffer[((cast_origin[1][1] /*y*/ as usize) * (WIDTH)) + cast_origin[1][0] /*x*/ as usize] = 0x00ffffff;*/
+        /*buffer[((cast_origin[1] /*y*/ as usize) * (WIDTH)) + cast_origin[0] /*x*/ as usize] = 0x00ffffff;*/
 
         /*buffer.sort();*/
         window.update_with_buffer(&buffer, WIDTH, HEIGHT).expect("Oops!");

@@ -73,10 +73,10 @@ pub fn triangle(buffer: &mut [u32], [mut x1,mut y1]: [i32; 2], [mut x2,mut y2]: 
         for y in y1..(if y3<height-1{y3} else{height-1}) {
             if y >= 0 {
                 for x in (if xf>0.0{xf as i32} else{0})..(if xt < (width-1) as f32{xt as i32} else{width-1}){
-                    buffer[(x+y*width) as usize] = color;
+                    buffer[(x+y*width) as usize] += color;
                 }
                 for x in (if xt > 0.0{xt as i32} else{0})..(if xf<width as f32{xf as i32} else{width-1}){
-                    buffer[(x+y*width) as usize] = color;
+                    buffer[(x+y*width) as usize] += color;
                 }
             }
             xf += dx_far;
@@ -95,7 +95,7 @@ pub fn cast_ver(cast_ver: &mut [[i32;2]], ver: &[[f64;3]],(cx,cy,cz):(f64,f64,f6
     }
 }
 
-pub fn rotate(arr: &mut [[f64;3]], r: &[[f64; 3]], fi: f64, axis: u8) {
+/*pub fn rotate(arr: &mut [[f64;3]], r: &[[f64; 3]], fi: f64, axis: u8) {
     let o = r[0];
     match axis%3{
         0 => for i in arr {
@@ -112,7 +112,7 @@ pub fn rotate(arr: &mut [[f64;3]], r: &[[f64; 3]], fi: f64, axis: u8) {
             i[0] = y*fi.sin()+x*fi.cos()+o[0];},
         _ => println!("Axis error!")
     }
-}
+}*/
 
 pub fn draw_faces(buffer: &mut [u32], faces: &Vec<(usize, usize, usize, u32)>, cast_ver: &[[i32; 2]]){
     for i in faces{
@@ -135,7 +135,44 @@ pub fn draw_edges(buffer: &mut [u32], edges: &Vec<[usize;2]>, cast_ver: &[[i32; 
 
 pub struct shape{
     pub ver: Vec<[f64;3]>,
-    pub origin: [[f64;3];1],
+    pub origin: [f64;3],
     pub edges: Vec<[usize;2]>,
     pub faces: Vec<(usize,usize,usize,u32)>
+}
+impl shape{
+    pub fn rotate(&mut self ,r: &[f64; 3], fi: f64, axis: u8){
+        match axis%3{
+            0 => {
+                for i in &mut self.ver {
+                    let (y, z) = (i[1] - r[1], i[2] - r[2]);
+                    i[2] = z * fi.cos() - y * fi.sin() + r[2];
+                    i[1] = z * fi.sin() + y * fi.cos() + r[1];
+                }
+                let (oy, oz) = (self.origin[1] - r[1], self.origin[2] - r[2]);
+                self.origin[1] = oz * fi.cos() - oy * fi.sin() + r[2];
+                self.origin[2] = oz * fi.sin() + oy * fi.cos() + r[1];
+            },
+            1 => {
+                for i in &mut self.ver {
+                    let (x, z) = (i[0] - r[0], i[2] - r[2]);
+                    i[0] = x * fi.cos() - z * fi.sin() + r[0];
+                    i[2] = x * fi.sin() + z * fi.cos() + r[2];
+                }
+                let (ox, oz) = (self.origin[0] - r[0], self.origin[2] - r[2]);
+                self.origin[0] = ox * fi.cos() - oz * fi.sin() + r[0];
+                self.origin[2] = ox * fi.sin() + oz * fi.cos() + r[1];
+            },
+            2 => {
+                for i in &mut self.ver {
+                    let (x, y) = (i[0] - r[0], i[1] - r[1]);
+                    i[1] = y * fi.cos() - x * fi.sin() + r[1];
+                    i[0] = y * fi.sin() + x * fi.cos() + r[0];
+                }
+                let (ox, oy) = (self.origin[0] - r[0], self.origin[2] - r[1]);
+                self.origin[1] = oy * fi.cos() - ox * fi.sin() + r[1];
+                self.origin[0] = oy * fi.sin() + ox * fi.cos() + r[0];
+            },
+            _ => println!("Axis error!")
+        }
+    }
 }
